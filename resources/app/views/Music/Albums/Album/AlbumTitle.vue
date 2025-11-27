@@ -11,7 +11,7 @@ defineProps({
 <template>
     <header class="details-title">
         <div class="details-title__title">
-            <h2>{{ title }}</h2>
+            <h3>{{ title }}</h3>
         </div>
         <img v-if="cover && cover.length === 40" :src="`/storage/${cover}`" :alt="title" />
     </header>

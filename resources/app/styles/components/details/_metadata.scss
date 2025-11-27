@@ -15,11 +15,15 @@
     grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
 
     padding: 0;
-    margin: 0;
+    margin: 1ch 0;
 
     gap: 1ch;
 
     list-style: none;
+
+    &.short {
+        grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    }
 
     > li:not(.details-link),
     > li.details-link a {

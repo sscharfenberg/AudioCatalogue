@@ -128,7 +128,9 @@ $main: (
     "table-select-border": map.get(s.$border, "base"),
     "table-select-radius": map.get(s.$radius, "base"),
     "table-input-padding": math.round(s.$base * 0.4) math.round(s.$base * 0.8),
-    "table-button-radius": map.get(s.$radius, "base")
+    "table-button-radius": map.get(s.$radius, "base"),
+    "tabnav-radius": map.get(s.$radius, "featured"),
+    "tabnav-border": map.get(s.$border, "base")
 ) !default;
 
 // size tokens for widgets

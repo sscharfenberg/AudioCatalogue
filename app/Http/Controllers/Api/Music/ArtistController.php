@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Api\Music;
 
-use App\Models\Genre;
 use App\Http\Controllers\Controller;
-use App\Services\GenreService;
-use App\Services\SongService;
-use App\Services\UrlSafeService;
+
+use App\Services\ArtistService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class GenreController extends Controller
+class ArtistController extends Controller
 {
 
     /**
@@ -20,13 +18,13 @@ class GenreController extends Controller
      */
     public function show(Request $request, string $name): JsonResponse
     {
-        $g = new GenreService;
-        $genre = $g->getGenreByName($name);
-        if (count($genre) > 0) {
-            return response()->json($genre);
+        $a = new ArtistService;
+        $artist = $a->getArtistByName($name);
+        if (count($artist) > 0) {
+            return response()->json($artist);
         } else {
             return response()
-                ->json(['message' => 'Es existiert kein Genre mit diesem Namen.'], 422);
+                ->json(['message' => 'Es existiert kein Artist mit diesem Namen.'], 422);
         }
     }
 

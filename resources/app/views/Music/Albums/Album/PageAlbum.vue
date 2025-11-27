@@ -10,7 +10,7 @@ import { push } from "notivue";
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AlbumMetaData from "./AlbumMetaData.vue";
-import GenreTitle from "./AlbumTitle.vue";
+import AlbumTitle from "./AlbumTitle.vue";
 DataTable.use(DataTablesCore);
 const route = useRoute();
 const router = useRouter();
@@ -106,7 +106,7 @@ const dataTableOptions = {
         </div>
         <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
         <div v-else class="album">
-            <genre-title :title="data.name" :cover="data.coverPath" />
+            <album-title :title="data.name" :cover="data.coverPath" />
             <album-meta-data :data="data" />
             <DataTable :data="data.songs" class="display responsive" :options="dataTableOptions" />
         </div>

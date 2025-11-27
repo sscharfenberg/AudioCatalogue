@@ -21,11 +21,13 @@ class ArtistService
     public function formatArtist(Artist $artist, bool $addSongs = false): array
     {
         $u = new UrlSafeService;
-        $artist = [
+        $songs = $artist->songs;
+        $albums = $artist->albums;
+        $arr = [
             'id' => $artist->id,
             'name' => $artist->name,
             'encodedName' => $u->encode($artist->name),
-            'albums' => $artist->albums->map(function (Album $album) use ($u) {
+            'albums' => $albums->map(function (Album $album) use ($u) {
                 return [
                     'id' => $album->id,
                     'name' => $album->name,
@@ -33,17 +35,18 @@ class ArtistService
                     'year' => $album->year,
                 ];
             })->toArray(),
-            'numSongs' => $artist->songs->count(),
-            'songsDuration' => $artist->songs->sum('duration'),
-            'songsFileSize' => $artist->songs->sum('size'),
+            'numAlbums' => $albums->count(),
+            'numSongs' => $songs->count(),
+            'songsDuration' => $songs->sum('duration'),
+            'songsFileSize' => $songs->sum('size'),
         ];
         if ($addSongs) {
             $s = new SongService;
-            $artist['songs'] = $artist->songs->map(function (Song $song) use ($s) {
+            $arr['songs'] = $artist->songs->map(function ($song) use ($s) {
                return $s->formatSong($song);
             })->toArray();
         }
-        return $artist;
+        return $arr;
     }
 
     /**
@@ -78,6 +81,25 @@ class ArtistService
                 return $this->formatArtist($artist);
             })->toArray();
         return array_values($artists);
+    }
+
+    /**
+     * @function get artist by name and return array for json response
+     * @param string $artistName
+     * @return array
+     */
+    public function getArtistByName(string $artistName):array
+    {
+        $u = new UrlSafeService;
+        $artist = Artist::where('name', $u->decode($artistName))
+            ->with('songs')
+            ->with('albums')
+            ->first();
+        if ($artist) {
+            return $this->formatArtist($artist, true);
+        } else {
+            return [];
+        }
     }
 
 }

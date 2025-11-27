@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { router } from "@/router";
-import AppButton from "Components/Button/AppButton.vue";
+import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AutoplaySwitch from "./AutoplaySwitch.vue";
 const props = defineProps({
     nav: {
@@ -8,32 +7,26 @@ const props = defineProps({
         required: true
     }
 });
-const onNavigate = async direction => {
-    await router.push({
-        to: "song",
-        params: {
-            id: props.nav[direction].encodedPath
-        }
-    });
-};
 </script>
 
 <template>
     <div class="song-buttons">
-        <app-button
-            icon="prev"
+        <router-link
             :disabled="nav.prev?.encodedPath ? null : true"
-            @click="onNavigate('prev')"
-            :short="true"
+            :to="{ name: 'song', params: { id: nav.prev?.encodedPath } }"
             v-tippy="{ content: `${nav.prev?.track} ${nav.prev?.name}` }"
-        />
-        <app-button
-            icon="next"
+            class="btn default short"
+        >
+            <app-icon name="prev" />
+        </router-link>
+        <router-link
             :disabled="nav.next?.encodedPath ? null : true"
-            @click="onNavigate('next')"
-            :short="true"
+            :to="{ name: 'song', params: { id: nav.next?.encodedPath } }"
             v-tippy="{ content: `${nav.next?.track} ${nav.next?.name}` }"
-        />
+            class="btn default short"
+        >
+            <app-icon name="next" />
+        </router-link>
         <autoplay-switch />
     </div>
 </template>
