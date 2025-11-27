@@ -15,9 +15,11 @@ defineProps({
             <app-icon name="date" />
             {{ data.year }}
         </li>
-        <li v-if="data.artist?.name" v-tippy="{ content: 'Artist' }" class="highlight">
-            <app-icon name="artist" />
-            {{ data.artist.name }}
+        <li v-if="data.artist?.name" v-tippy="{ content: 'Artist' }" class="highlight details-link">
+            <router-link :to="{ name: 'artist', params: { id: data.artist.encodedName } }">
+                <app-icon name="artist" />
+                {{ data.artist.name }}
+            </router-link>
         </li>
         <li v-if="data.genre?.name" class="details-link" v-tippy="{ content: 'Genre' }">
             <router-link :to="{ name: 'genre', params: { id: data.genre.encodedName } }">

@@ -38,7 +38,7 @@ onMounted(() => {
 
 <template>
     <app-widget :loading="isLoading" icon="album" :error="hasError" @refresh="fetchData()" :refresh-button="true">
-        <template #title>Zufalls Alben</template>
+        <template #title>Alben</template>
         <template #body>
             <nav class="stats" v-if="data?.length">
                 <router-link
@@ -72,7 +72,7 @@ onMounted(() => {
         </template>
         <template #footer>
             <router-link class="btn primary" :to="{ name: 'albums' }">
-                <app-icon name="music" />
+                <app-icon name="album" />
                 Alle Alben
             </router-link>
         </template>

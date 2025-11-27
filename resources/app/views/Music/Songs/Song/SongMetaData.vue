@@ -11,9 +11,11 @@ defineProps({
 </script>
 <template>
     <ul class="details-metadata">
-        <li v-if="song.artist.name" class="highlight" v-tippy="{ content: 'Artist' }">
-            <app-icon name="artist" />
-            {{ song.artist.name }}
+        <li v-if="song.artist.name" class="details-link highlight" v-tippy="{ content: 'Artist' }">
+            <router-link :to="{ name: 'artist', params: { id: song.artist.encodedName } }">
+                <app-icon name="artist" />
+                {{ song.artist.name }}
+            </router-link>
         </li>
         <li v-if="song.album.name" class="details-link highlight" v-tippy="{ content: 'Album' }">
             <router-link :to="{ name: 'album', params: { id: song.album.id } }">
@@ -28,15 +30,14 @@ defineProps({
                 {{ song.genre.name }}
             </router-link>
         </li>
-        <li v-if="song.track && song.album.tracks">
-            <span class="inside" v-if="song.album.discs > 1" v-tippy="{ content: 'Disc' }">
-                <app-icon name="album" />
-                {{ song.disc }}/{{ song.album.discs }}
-            </span>
-            <span class="inside" v-tippy="{ content: 'Track' }">
-                <app-icon name="track" />
-                {{ song.track }}<span v-if="song.track <= song.album.discTracks">/{{ song.album.discTracks }}</span>
-            </span>
+        <li v-if="song.disc && song.album.discs > 1" v-tippy="{ content: 'Disc' }">
+            <app-icon name="album" />
+            {{ song.disc }}/{{ song.album.discs }}
+        </li>
+        <li v-if="song.track" v-tippy="{ content: 'Track' }">
+            <app-icon name="track" />
+            <span v-if="song.track <= song.album.discTracks">{{ song.track }}/{{ song.album.discTracks }}</span>
+            <span v-else>{{ song.track }}</span>
         </li>
         <li v-if="song.duration" v-tippy="{ content: 'Laufzeit' }">
             <app-icon name="time" />

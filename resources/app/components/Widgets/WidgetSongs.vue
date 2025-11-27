@@ -38,7 +38,7 @@ onMounted(() => {
 
 <template>
     <app-widget :loading="isLoading" icon="music" :error="hasError" @refresh="fetchData()" :refresh-button="true">
-        <template #title>Zufalls Songs</template>
+        <template #title>Songs</template>
         <template #body>
             <nav class="stats" v-if="data?.length">
                 <router-link

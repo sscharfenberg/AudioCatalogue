@@ -17,7 +17,6 @@ const fetchData = () => {
             if (response.data?.length > 0) {
                 hasError.value = false;
                 data.value = response.data;
-                console.log(response.data);
             }
         })
         .catch(error => {
@@ -39,7 +38,7 @@ onMounted(() => {
 
 <template>
     <app-widget :loading="isLoading" icon="album" :error="hasError" @refresh="fetchData()" :refresh-button="true">
-        <template #title>Zufalls Künstler</template>
+        <template #title>Künstler</template>
         <template #body>
             <nav class="stats" v-if="data?.length && !hasError">
                 <router-link
@@ -73,7 +72,7 @@ onMounted(() => {
         </template>
         <template #footer>
             <router-link class="btn primary" :to="{ name: 'albums' }">
-                <app-icon name="music" />
+                <app-icon name="artist" />
                 Alle Künstler
             </router-link>
         </template>
