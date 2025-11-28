@@ -51,7 +51,7 @@ const onTabChange = val => (currentTabIndex.value = val);
             <loading-spinner :size="8" />
         </div>
         <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
-        <div v-else class="album" v-if="!hasError && !isLoading && data">
+        <div v-else class="album">
             <header class="details-title">
                 <div class="details-title__title">
                     <h3>{{ data.name }}</h3>

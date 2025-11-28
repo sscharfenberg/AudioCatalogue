@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AutoplaySwitch from "./AutoplaySwitch.vue";
-const props = defineProps({
+defineProps({
     nav: {
         type: Object,
         required: true
