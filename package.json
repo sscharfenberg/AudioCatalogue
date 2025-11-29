@@ -30,6 +30,7 @@
         "datatables.net-responsive-dt": "^3.0.7",
         "datatables.net-vue3": "^3.0.4",
         "date-fns": "^4.1.0",
+        "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
         "notivue": "^2.4.5",
         "pinia": "^3.0.3",

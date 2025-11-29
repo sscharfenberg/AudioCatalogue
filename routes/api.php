@@ -50,6 +50,10 @@ Route::prefix('api')->group(function () {
     Route::get('/music/genres/{name}',
         [\App\Http\Controllers\Api\Music\GenreController::class, "show"]
     );
+    // Genre Search Controller
+    Route::get('/music/search/genres/{search}',
+        [\App\Http\Controllers\Api\Music\GenreSearchController::class, "show"]
+    );
 
     // Albums Controller
     Route::get('/music/albums',

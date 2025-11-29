@@ -24,7 +24,6 @@ class GenresController extends Controller
             return response()
                 ->json(['message' => 'Fehler beim laden der Genres. app:update durchgeführt?'], 422);
         }
-
     }
 
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ShowError from "Components/Error/ShowError.vue";
+import AjaxSearch from "Components/Search/AjaxSearch.vue";
 import WidgetBody from "./WidgetBody.vue";
 import WidgetFooter from "./WidgetFooter.vue";
 import WidgetLoader from "./WidgetLoader.vue";
@@ -19,7 +20,8 @@ defineProps({
     refreshButton: {
         type: Boolean,
         default: false
-    }
+    },
+    ajaxUrl: String
 });
 </script>
 
@@ -33,6 +35,7 @@ defineProps({
         >
             <slot name="title" />
         </widget-title>
+        <ajax-search v-if="ajaxUrl" :ajax-url="ajaxUrl" />
         <widget-body v-if="$slots.body && !loading && !error">
             <slot name="body" />
         </widget-body>

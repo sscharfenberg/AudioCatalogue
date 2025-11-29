@@ -151,6 +151,13 @@ $widget: (
     )
 ) !default;
 
+// size tokens for .form-input
+$form: (
+    "border": map.get(s.$border, "base"),
+    "radius": map.get(s.$radius, "base"),
+    "padding": math.round(s.$base * 0.5) math.round(s.$base * 0.8)
+);
+
 // size tokens for app-button
 $button: (
     "padding": #{s.$base * 0.4 s.$base * 0.8},

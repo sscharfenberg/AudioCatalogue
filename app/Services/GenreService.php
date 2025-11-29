@@ -71,4 +71,16 @@ class GenreService
         });
         return $json;
     }
+
+    /**
+     * @function search database for genres
+     * @param string $name
+     * @return array
+     */
+    public function searchGenreByName(string $name): array
+    {
+        $genres = Genre::whereLike('name', "%$name%", caseSensitive: false)
+            ->get();
+        dd($genres);
+    }
 }
