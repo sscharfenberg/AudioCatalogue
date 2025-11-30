@@ -192,6 +192,25 @@ $form: (
     "surface-focus": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color"))
 ) !default;
 
+// colors for search results
+$search: (
+    "background": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.2),
+            color.adjust(map.get(c.$grey, "ebony"), $alpha: -0.2)
+        ),
+    "surface": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "link-background-odd": light-dark(map.get(c.$grey, "mystic"), map.get(c.$grey, "ebony")),
+    "link-background-even": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $lightness: -5%),
+            color.adjust(map.get(c.$grey, "ebony"), $lightness: 5%)
+        ),
+    "link-background-hover": light-dark(
+            map.get(c.$brand, "christine", "contrast"),
+            map.get(c.$brand, "viking", "contrast")
+        ),
+    "link-surface-hover": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color"))
+) !default;
+
 // colors for footer landmark
 $footer: (
     "themeswitch-background-selected": light-dark(

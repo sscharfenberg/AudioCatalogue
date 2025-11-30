@@ -48,7 +48,13 @@ const dataTableOptions = {
             data: "track",
             title: "Track",
             render: (data, type, row) => {
-                return row.track + "/" + row.album.discTracks;
+                if (type === "display" || type === "filter") {
+                    if (row.track <= row.album.discTracks) {
+                        return row.track + "/" + row.album.discTracks;
+                    }
+                    return row.track;
+                }
+                return data;
             }
         },
         {

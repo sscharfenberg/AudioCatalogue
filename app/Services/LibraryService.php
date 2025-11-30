@@ -46,4 +46,26 @@ class LibraryService {
         }
     }
 
+    /**
+     * @function format a search result item
+     * @param string $to
+     * @param string $id
+     * @param string $label
+     * @param string $aside
+     * @param string $icon
+     * @return string[]
+     */
+    public function formatSearchItem(string $to, string $id, string $label, string $aside, string $icon): array
+    {
+        return [
+            'link' => [
+                'to' => $to,
+                'param' => $id
+            ],
+            'label' => $label,
+            'aside' => $aside,
+            'icon' => $icon,
+        ];
+    }
+
 }

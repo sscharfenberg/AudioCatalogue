@@ -10,6 +10,7 @@ import "tippy.js/dist/tippy.css";
 import { createApp } from "vue";
 import VueTippy from "vue-tippy";
 import App from "./App.vue";
+
 import { router } from "./router";
 
 const notivue = createNotivue({
@@ -26,7 +27,6 @@ const notivue = createNotivue({
 });
 
 const app = createApp(App);
-
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);

@@ -75,6 +75,10 @@ Route::prefix('api')->group(function () {
     Route::get('/music/artists/{id}',
         [\App\Http\Controllers\Api\Music\ArtistController::class, "show"]
     );
+    // Genre Search Controller
+    Route::get('/music/search/artists/{search}',
+        [\App\Http\Controllers\Api\Music\ArtistSearchController::class, "show"]
+    );
 
 });
 

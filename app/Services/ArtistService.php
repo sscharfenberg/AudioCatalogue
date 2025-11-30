@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\Album;
 use App\Models\Artist;
-use App\Models\Genre;
-use App\Models\Song;
 use App\Services\UrlSafeService;
 use \Illuminate\Support\Collection;
 
@@ -104,6 +102,37 @@ class ArtistService
         } else {
             return [];
         }
+    }
+
+    /**
+     * @function search database for genres
+     * @param string $name
+     * @return array
+     */
+    public function searchArtistByName(string $name): array
+    {
+        $json = [];
+        $u = new UrlSafeService;
+        $l = new LibraryService;
+        $f = new FormatService;
+        Artist::whereLike('name', "%$name%", caseSensitive: false)
+            ->with('songs')
+            ->take(config('collection.search_max.artists'))
+            ->get()
+            ->map(function ($artist) {
+                $artist->duration = $artist->songs->sum('duration');
+                return $artist;
+            })->sortByDesc('duration')
+            ->each(function ($artist) use (&$json, $l, $u, $f) {
+                $json[] = $l->formatSearchItem(
+                    'artist',
+                    $u->encode($artist->name),
+                    $artist->name,
+                    $f->formatDuration($artist->duration),
+                    "time"
+                );
+            })->toArray();
+        return array_values($json);
     }
 
 }

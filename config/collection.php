@@ -91,6 +91,13 @@ return [
         'artists' => [
             'random' => 4
         ]
+    ],
+
+    'search_max' => [
+        'genres' => 10,
+        'artists' => 10,
+        'albums' => 10,
+        'songs' => 10,
     ]
 
 ];

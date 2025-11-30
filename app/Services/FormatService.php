@@ -1,11 +1,12 @@
 <?php
 namespace App\Services;
+use Carbon\CarbonInterval;
 
 class FormatService
 {
 
     /**
-     * @function format duration from millieseconds to human readable string
+     * @function format duration from milliseconds to human readable string
      * @param float $input
      * @return string
      */
@@ -24,6 +25,21 @@ class FormatService
             $dateString = $minutes."m ".$dateString;
         }
         return $dateString;
+    }
+
+    public function formatDuration(float $input): string
+    {
+        $carbonString =  CarbonInterval::seconds($input)
+            ->cascade()
+            ->forHumans();
+        $dateString = str_replace(' Tage', 'd',$carbonString);
+        $dateString = str_replace(' Tag', 'd',$dateString);
+        $dateString = str_replace(' Stunden', 'h', $dateString);
+        $dateString = str_replace(' Stunde', 'h', $dateString);
+        $dateString = str_replace(' Minuten', 'm', $dateString);
+        $dateString = str_replace(' Minute', 'm', $dateString);
+        $dateString = str_replace(' Sekunde', 's', $dateString);
+        return str_replace(' Sekunden', 's', $dateString);
     }
 
     public function formatBytes($bytes, $precision = 2): string

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api\Music;
 
 use App\Http\Controllers\Controller;
-use App\Services\GenreService;
+use App\Services\ArtistService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class GenreSearchController extends Controller
+class ArtistSearchController extends Controller
 {
+
     /**
      * @param Request $request
      * @param string $search
@@ -16,11 +17,12 @@ class GenreSearchController extends Controller
      */
     public function show(Request $request, string $search): JsonResponse
     {
-        $g = new GenreService;
-        $genres = $g->searchGenreByName($search);
+        $a = new ArtistService;
+        $artists = $a->searchArtistByName($search);
         return response()->json([
             'searchTerm' => $search,
-            'results' => $genres
+            'results' => $artists
         ]);
     }
+
 }

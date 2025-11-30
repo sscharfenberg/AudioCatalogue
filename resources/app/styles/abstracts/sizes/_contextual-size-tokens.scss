@@ -156,7 +156,14 @@ $form: (
     "border": map.get(s.$border, "base"),
     "radius": map.get(s.$radius, "base"),
     "padding": math.round(s.$base * 0.5) math.round(s.$base * 0.8)
-);
+) !default;
+
+// size tokens for search results
+$search: (
+    "padding": math.round(s.$base * 0.5),
+    "radius-top": map.get(s.$radius, "base"),
+    "radius-bottom": map.get(s.$radius, "featured")
+) !default;
 
 // size tokens for app-button
 $button: (

@@ -1,0 +1,60 @@
+/******************************************************************************
+ * search result list
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/sizes" as s;
+@use "Abstracts/colors" as c;
+
+.search-result {
+    display: flex;
+    position: absolute;
+    top: 39px;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+
+    padding: map.get(s.$search, "padding");
+    gap: 1ch;
+
+    background-color: map.get(c.$search, "background");
+    color: map.get(c.$search, "surface");
+
+    border-radius: map.get(s.$search, "radius-top") map.get(s.$search, "radius-top") map.get(s.$search, "radius-bottom")
+        map.get(s.$search, "radius-bottom");
+
+    > a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0.25ch 0.5ch;
+
+        gap: 1ch;
+
+        background-color: map.get(c.$search, "link-background-odd");
+        color: map.get(c.$search, "surface");
+
+        text-decoration: none;
+
+        &:nth-of-type(even) {
+            background-color: map.get(c.$search, "link-background-even");
+        }
+
+        &:hover {
+            background-color: map.get(c.$search, "link-background-hover");
+            color: map.get(c.$search, "link-surface-hover");
+        }
+
+        > span {
+            display: flex;
+            align-items: center;
+
+            gap: 0.5ch;
+
+            &.aside {
+                white-space: nowrap;
+            }
+        }
+    }
+}

@@ -79,8 +79,27 @@ class GenreService
      */
     public function searchGenreByName(string $name): array
     {
-        $genres = Genre::whereLike('name', "%$name%", caseSensitive: false)
-            ->get();
-        dd($genres);
+        $json = [];
+        $u = new UrlSafeService;
+        $l = new LibraryService;
+        $f = new FormatService;
+        Genre::whereLike('name', "%$name%", caseSensitive: false)
+            ->with('songs')
+            ->take(config('collection.search_max.genres'))
+            ->get()
+            ->map(function ($genre) {
+                $genre->duration = $genre->songs->sum('duration');
+                return $genre;
+            })->sortByDesc('duration')
+            ->each(function ($genre) use (&$json, $l, $u, $f) {
+                $json[] = $l->formatSearchItem(
+                    'genre',
+                    $u->encode($genre->name),
+                    $genre->name,
+                    $f->formatDuration($genre->duration),
+                    "time"
+                );
+            })->toArray();
+        return array_values($json);
     }
 }
