@@ -35,7 +35,7 @@ defineProps({
         >
             <slot name="title" />
         </widget-title>
-        <ajax-search v-if="ajaxUrl" :ajax-url="ajaxUrl" />
+        <ajax-search v-if="ajaxUrl && !loading" :ajax-url="ajaxUrl" />
         <widget-body v-if="$slots.body && !loading && !error">
             <slot name="body" />
         </widget-body>

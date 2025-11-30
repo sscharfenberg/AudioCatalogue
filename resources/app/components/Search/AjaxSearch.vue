@@ -88,7 +88,7 @@ onUnmounted(() => {
             @focus="onFocus"
         />
         <loading-spinner v-if="isLoading" :size="2" />
-        <search-result v-if="!isLoading && showResults && search.length > 0" :term="search" :results="results" />
+        <search-result v-show="!isLoading && showResults && search.length > 0" :term="search" :results="results" />
     </div>
 </template>
 

@@ -102,7 +102,7 @@ onMounted(() => {
                 <li class="stats__item">
                     <app-icon name="datetime" />
                     Letzte Aktualisierung
-                    <span class="highlight">{{ format(data.last_full_update, "dd.MM.yyyy HH:mm:ss") }}</span>
+                    <span class="highlight pull-right">{{ format(data.last_full_update, "dd.MM.yyyy HH:mm:ss") }}</span>
                 </li>
             </ul>
         </template>
