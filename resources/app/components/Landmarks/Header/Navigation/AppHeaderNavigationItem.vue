@@ -17,7 +17,7 @@ defineProps({
 </script>
 
 <template>
-    <router-link :to="{ name: name }" :disabled="['audiobooks', 'playlists'].includes(name) ? 'disabled' : null">
+    <router-link :to="{ name: name }" :disabled="['playlists'].includes(name) ? 'disabled' : null">
         <app-icon :name="icon" />
         <span>{{ label }}</span>
     </router-link>

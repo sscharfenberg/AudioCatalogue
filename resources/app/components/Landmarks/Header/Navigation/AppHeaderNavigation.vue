@@ -3,7 +3,7 @@ import AppHeaderNavigationItem from "./AppHeaderNavigationItem.vue";
 const items = [
     { name: "dashboard", label: "Dashboard", icon: "home" },
     { name: "music", label: "Musik", icon: "music" },
-    { name: "audiobooks", label: "Audiobooks", icon: "audiobook" },
+    { name: "audiobooks", label: "Audiobooks", icon: "audiobooks" },
     { name: "playlists", label: "Playlists", icon: "playlist" }
 ];
 </script>
