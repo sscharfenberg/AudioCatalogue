@@ -1,3 +1,3 @@
 <script setup lang="ts"></script>
 
-<template>Audiobook</template>
+<template>Audiobook!</template>
