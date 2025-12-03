@@ -169,8 +169,9 @@ class AlbumService
      */
     private function getCover(Album $album): string
     {
-        $s = new SongService;
-        return $s->getCoverPath($album->songs->first());
+        $s = new CoverService();
+        $song = $album->songs->first();
+        return $s->getCover($song->id, $song->path, 'music', $song->cover);
     }
 
     /**
@@ -181,8 +182,9 @@ class AlbumService
      */
     private function getCoverThumb(Album $album): string
     {
-        $s = new SongService;
-        return $s->getCoverPath($album->songs->first(), true);
+        $s = new CoverService();
+        $song = $album->songs->first();
+        return $s->getCover($song->id, $song->path, 'music', $song->cover, true);
     }
 
     /**

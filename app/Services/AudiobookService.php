@@ -5,12 +5,20 @@ namespace App\Services;
 use App\Models\Audiobook;
 use App\Models\Author;
 use App\Models\Narrator;
+use App\Models\Track;
 
 class AudiobookService
 {
 
-    private function formatAudiobook(Audiobook $audiobook): array
+    /**
+     * @function format json for audiobook
+     * @param Audiobook $audiobook
+     * @param bool $addCover
+     * @return array
+     */
+    private function formatAudiobook(Audiobook $audiobook, bool $addCover = false): array
     {
+        $c = new CoverService();
         $arr = [
             'id' => $audiobook->id,
             'name' => $audiobook->name,
@@ -20,9 +28,17 @@ class AudiobookService
             'authors' => $audiobook->authors,
             'narrators' => $audiobook->narrators
         ];
+        if ($addCover) {
+            $track = $audiobook->tracks()->first();
+            $arr['cover'] = $c->getCover($track->id, $track->path, 'audiobooks', $track->cover);
+        }
         return $arr;
     }
 
+    /**
+     * @function create response for "all audiobooks"
+     * @return array
+     */
     public function getAllAudiobooks(): array
     {
         $allAuthors = Author::all();
@@ -66,12 +82,21 @@ class AudiobookService
                         };
                     });
                 $audiobook->narrators = $narrators;
-                return $this->formatAudiobook($audiobook);
+                // format audiobook json array
+                return $this->formatAudiobook($audiobook, true);
             })->sortByDesc('year');
 
-        // TODO: add audiobooks to author collection.
+        return [
+            'audiobooks' => array_values($books->toArray()),
+            'authors' => array_values($allAuthors->toArray()),
+            'narrators' => array_values($allNarrators->toArray())
+        ];
+    }
 
-        return array_values($books->toArray());
+
+    private function getCoverPath(Track $track, bool $thumb = false): string
+    {
+        return "";
     }
 
 }
