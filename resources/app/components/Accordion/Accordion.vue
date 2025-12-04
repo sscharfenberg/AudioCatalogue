@@ -26,6 +26,10 @@ const showBody = ref(false);
 .accordion {
     display: flex;
     flex-wrap: wrap;
+
+    &:not(:last-of-type) {
+        margin-bottom: 1ch;
+    }
 }
 
 .accordion-head {
@@ -42,7 +46,7 @@ const showBody = ref(false);
     background: transparent;
     color: map.get(c.$main, "accordion-surface");
 
-    font-weight: normal;
+    font-weight: 300;
 
     line-height: 1.4;
 
@@ -63,8 +67,7 @@ const showBody = ref(false);
         flex-grow: 1;
 
         background-color: currentcolor;
-        border-top-right-radius: map.get(s.$main, "subheadline-line-radius");
-        border-bottom-right-radius: map.get(s.$main, "subheadline-line-radius");
+        border-radius: map.get(s.$main, "subheadline-line-radius");
 
         transition: background-color map.get(ti.$timings, "fast") linear;
 
