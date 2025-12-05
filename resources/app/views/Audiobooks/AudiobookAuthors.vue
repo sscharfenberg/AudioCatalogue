@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatBytes, formatSeconds } from "@/formatters/numbers";
-import Accordion from "Components/Accordion/Accordion.vue";
+import AccordionItem from "Components/Accordion/AccordionItem.vue";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 
 const props = defineProps({
@@ -20,7 +20,7 @@ const getAuthorBooks = authorId => {
 
 <template>
     <div class="authors">
-        <accordion v-for="author in authors" :key="author.id">
+        <accordion-item v-for="author in authors" :key="author.id">
             <template #head>{{ author.name }}: {{ getAuthorBooks(author.id).length }}</template>
             <template #body>
                 <ul class="bookshelf">
@@ -56,7 +56,7 @@ const getAuthorBooks = authorId => {
                     </li>
                 </ul>
             </template>
-        </accordion>
+        </accordion-item>
     </div>
 </template>
 

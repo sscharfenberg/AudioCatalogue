@@ -2,7 +2,7 @@
 import { formatBytes, formatSeconds } from "@/formatters/numbers";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 
-const props = defineProps({
+defineProps({
     authors: {
         type: Array,
         required: true

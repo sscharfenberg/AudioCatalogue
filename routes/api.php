@@ -90,9 +90,13 @@ Route::prefix('api')->group(function () {
     /**
      * Audiobook Controllers
      */
-    // AudiobookBooks Controller
+    // Audiobooks Controller
     Route::get('/audiobooks',
         [\App\Http\Controllers\Api\Audiobooks\AudiobooksController::class, "show"]
+    );
+    // Audiobook Controller
+    Route::get('/audiobooks/{name}',
+        [\App\Http\Controllers\Api\Audiobooks\AudiobookController::class, "show"]
     );
 
 });

@@ -154,6 +154,10 @@ $main: (
         ),
     "bookshelf-book-data-surface": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
     "accordion-surface": light-dark(map.get(c.$grey, "bunker"), map.get(c.$grey, "infra")),
+    "accordion-line-background": light-dark(
+            color.adjust(map.get(c.$grey, "infra"), $alpha: -0.2),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.2)
+        ),
     "accordion-open": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "gorse", "color"))
 ) !default;
 

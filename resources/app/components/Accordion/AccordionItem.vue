@@ -66,7 +66,7 @@ const showBody = ref(false);
         display: block;
         flex-grow: 1;
 
-        background-color: currentcolor;
+        background-color: map.get(c.$main, "accordion-line-background");
         border-radius: map.get(s.$main, "subheadline-line-radius");
 
         transition: background-color map.get(ti.$timings, "fast") linear;

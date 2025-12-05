@@ -14,10 +14,11 @@ class AudiobookService
      * @function format json for audiobook
      * @param Audiobook $audiobook
      * @param bool $addCover
+     * @param bool $addTracks
      * @return array
      * @throws \Exception
      */
-    private function formatAudiobook(Audiobook $audiobook, bool $addCover = false): array
+    private function formatAudiobook(Audiobook $audiobook, bool $addCover = false, bool $addTracks = false): array
     {
         $c = new CoverService();
         $u = new UrlSafeService();
@@ -36,8 +37,29 @@ class AudiobookService
             $track = $audiobook->tracks()->first();
             $arr['cover'] = $c->getCover($track->id, $track->path, 'audiobooks', $track->cover);
         }
+        if ($addTracks) {
+            $arr['tracks'] = $audiobook->tracks;
+        }
         return $arr;
     }
+
+    private function formatTrack(Track $track): array
+    {
+        $u = new UrlSafeService();
+        $arr = [
+            'id' => $track->id,
+            'name' => $track->name,
+            'track' => $track->track,
+            'codec' => $track->codec,
+            'channel' => $track->channel,
+            'size' => $track->size,
+            'duration' => $track->duration,
+            'sample_rate' => $track->sample_rate,
+            'path' => $u->encode($track->path)
+        ];
+        return $arr;
+    }
+
 
     /**
      * @function create response for "all audiobooks"
@@ -49,45 +71,13 @@ class AudiobookService
         $allNarrators = Narrator::all();
         $books = Audiobook::with('tracks')
             ->get()
-            ->map(function (Audiobook $audiobook) use ($allAuthors, $allNarrators) {
+            ->map(function (Audiobook $audiobook) {
                 $audiobook->duration = $audiobook->tracks->sum('duration');
                 $audiobook->size = $audiobook->tracks->sum('size');
-                // get authors of the audiobook. some tracks might not have an author.
-                $authors = [];
-                $audiobook->tracks
-                    ->unique('author_id')
-                    ->pluck('author_id')
-                    ->filter( function($authorId) {
-                        return !is_null($authorId);
-                    })->each( function($authorId) use ($allAuthors, &$authors) {
-                        $author = $allAuthors->where('id', $authorId)->first();
-                        if ($author) {
-                            $authors[] = [
-                                'id' => $author->id,
-                                'name' => $author->name
-                            ];
-                        };
-                    });
-                $audiobook->authors = $authors;
-                // get narrators. some tracks might not have a narrator, some audiobooks have several narrators.
-                $narrators = [];
-                $audiobook->tracks
-                    ->unique('narrator_id')
-                    ->pluck('narrator_id')
-                    ->filter( function($narratorId) {
-                        return !is_null($narratorId);
-                    })->each( function($narratorId) use ($allNarrators, &$narrators) {
-                        $narrator = $allNarrators->where('id', $narratorId)->first();
-                        if ($narrator) {
-                            $narrators[] = [
-                                'id' => $narrator->id,
-                                'name' => $narrator->name
-                            ];
-                        };
-                    });
-                $audiobook->narrators = $narrators;
+                $audiobook->authors = $this->getBookAuthors($audiobook);
+                $audiobook->narrators = $this->getBookNarrators($audiobook);
                 // format audiobook json array
-                return $this->formatAudiobook($audiobook, true);
+                return $this->formatAudiobook($audiobook, true, false);
             })->sortByDesc('year');
 
         return [
@@ -95,6 +85,72 @@ class AudiobookService
             'authors' => array_values($allAuthors->toArray()),
             'narrators' => array_values($allNarrators->toArray())
         ];
+    }
+
+    /**
+     * @function get authors of an audiobook
+     * @param Audiobook $audiobook
+     * @return array
+     */
+    private function getBookAuthors(Audiobook $audiobook): array
+    {
+        $allAuthors = Author::all();
+        // get authors of the audiobook. some tracks might not have an author.
+        return array_values(
+            $audiobook->tracks
+                ->unique('author_id')
+                ->pluck('author_id')
+                ->filter( function($authorId) {
+                    return !is_null($authorId);
+                })->map( function($authorId) use ($allAuthors) {
+                    $author = $allAuthors->where('id', $authorId)->first();
+                    return [
+                        'id' => $author->id,
+                        'name' => $author->name
+                    ];
+                })->toArray()
+        );
+    }
+
+    /**
+     * @function get narrators of an audiobook
+     * @param Audiobook $audiobook
+     * @return array
+     */
+    private function getBookNarrators(Audiobook $audiobook): array
+    {
+        $allNarrators = Narrator::all();
+        return array_values(
+            $audiobook->tracks
+                ->unique('narrator_id')
+                ->pluck('narrator_id')
+                ->filter( function($narratorId) {
+                    return !is_null($narratorId);
+                })->map( function($narratorId) use ($allNarrators) {
+                    $narrator = $allNarrators->where('id', $narratorId)->first();
+                    return [
+                        'id' => $narrator->id,
+                        'name' => $narrator->name
+                    ];
+                })->toArray()
+        );
+    }
+
+    public function getAudiobook(string $name): array
+    {
+        $u = new UrlSafeService();
+        $book = Audiobook::where('name', $u->decode($name))
+            ->with('tracks')
+            ->first();
+        $book->duration = $book->tracks->sum('duration');
+        $book->size = $book->tracks->sum('size');
+        $book->authors = $this->getBookAuthors($book);
+        $book->narrators = $this->getBookNarrators($book);
+        $book->tracks = $book->tracks->map(function($track) {
+            return $this->formatTrack($track);
+        });
+        // format audiobook json array
+        return $this->formatAudiobook($book, true, true);
     }
 
 }
