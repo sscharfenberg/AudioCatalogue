@@ -16,7 +16,7 @@ const $player = ref<MediaPlayerElement>();
 <template>
     <media-player
         :title="title"
-        :src="`/storage/${src}`"
+        :src="src"
         :autoplay="autoplay ? true : null"
         ref="$player"
         @ended="$emit('player-ended')"

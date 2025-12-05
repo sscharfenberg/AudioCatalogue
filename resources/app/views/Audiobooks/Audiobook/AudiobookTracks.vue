@@ -10,6 +10,9 @@ const props = defineProps({
         required: true
     }
 });
+const emit = defineEmits<{
+    (e: "play", value: string): void;
+}>();
 const dataTableOptions = {
     columns: [
         { data: "name", title: "Name" },
@@ -52,7 +55,7 @@ const dataTableOptions = {
     ],
     fnRowCallback: (nRow, aData) => {
         nRow.addEventListener("click", () => {
-            console.log(aData.path);
+            emit("play", aData.path);
         });
     },
     order: [[1, "asc"]],

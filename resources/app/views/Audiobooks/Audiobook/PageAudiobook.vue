@@ -2,6 +2,7 @@
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
+import AudioPlayer from "Components/Player/AudioPlayer.vue";
 import { push } from "notivue";
 import AudiobookTracks from "Views/Audiobooks/Audiobook/AudiobookTracks.vue";
 import { ref, watch } from "vue";
@@ -12,6 +13,7 @@ const isLoading = ref(false);
 const data = ref(null);
 const hasError = ref(false);
 const route = useRoute();
+const autoplay = ref(false);
 const fetchData = () => {
     data.value = null;
     isLoading.value = true;
@@ -34,6 +36,19 @@ const fetchData = () => {
         });
 };
 watch(() => route.params.id, fetchData, { immediate: true });
+const onPlay = (value: string) => {
+    axios
+        .get(`/api/audiobooks/play/${value}`)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        })
+        .finally(() => {
+            console.log("xhr finished.");
+        });
+};
 </script>
 
 <template>
@@ -44,9 +59,9 @@ watch(() => route.params.id, fetchData, { immediate: true });
         <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
         <div v-if="!hasError && !isLoading && data?.tracks?.length" class="audiobook">
             <audiobook-title :title="data.name" :cover="data.cover" />
-            [ PLAYER ]<br />
+            <audio-player src="test" title="fuddel" :autoplay="autoplay" />
             <audiobook-meta-data :book="data" />
-            <audiobook-tracks :tracks="data.tracks" />
+            <audiobook-tracks :tracks="data.tracks" @play="onPlay" />
         </div>
     </section>
 </template>

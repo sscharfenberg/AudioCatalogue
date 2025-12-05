@@ -98,6 +98,10 @@ Route::prefix('api')->group(function () {
     Route::get('/audiobooks/{name}',
         [\App\Http\Controllers\Api\Audiobooks\AudiobookController::class, "show"]
     );
+    // Play Track Controller
+    Route::get('/audiobooks/play/{path}',
+        [\App\Http\Controllers\Api\Audiobooks\TrackController::class, "play"]
+    );
 
 });
 

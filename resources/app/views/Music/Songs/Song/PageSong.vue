@@ -61,7 +61,12 @@ watch(() => route.params.id, fetchData, { immediate: true });
         <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
         <div v-else class="song">
             <song-title :song="data" />
-            <audio-player :src="data.mp3Path" :title="data.name" :autoplay="store.autoplay" @player-ended="onEnded" />
+            <audio-player
+                :src="`/storage/${data.mp3Path}`"
+                :title="data.name"
+                :autoplay="store.autoplay"
+                @player-ended="onEnded"
+            />
             <song-meta-data :song="data" />
         </div>
     </section>

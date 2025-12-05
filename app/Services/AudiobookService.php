@@ -6,6 +6,8 @@ use App\Models\Audiobook;
 use App\Models\Author;
 use App\Models\Narrator;
 use App\Models\Track;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AudiobookService
 {
@@ -43,6 +45,11 @@ class AudiobookService
         return $arr;
     }
 
+    /**
+     * @function json format for single track
+     * @param Track $track
+     * @return array
+     */
     private function formatTrack(Track $track): array
     {
         $u = new UrlSafeService();
@@ -136,6 +143,12 @@ class AudiobookService
         );
     }
 
+    /**
+     * @function get a specific audiobook
+     * @param string $name
+     * @return array
+     * @throws \Exception
+     */
     public function getAudiobook(string $name): array
     {
         $u = new UrlSafeService();
@@ -151,6 +164,33 @@ class AudiobookService
         });
         // format audiobook json array
         return $this->formatAudiobook($book, true, true);
+    }
+
+    /**
+     * @function prepare mp3 track and return storage file name.
+     * @param string $path
+     * @return string
+     */
+    public function playTrack(string $path): string
+    {
+        $u = new UrlSafeService();
+        $track = Track::where('path', $u->decode($path))
+            ->first();
+        $storageTrackName = "$track->id.mp3";
+        $serverPathName = config('collection.server.audiobooks.path').$track->path;
+        if (Storage::disk('public')->missing($storageTrackName)) {
+            Log::channel('api')->info("File '$storageTrackName' missing in public storage.");
+            if (file_exists($serverPathName)) {
+                Storage::disk('public')->put($storageTrackName, file_get_contents($serverPathName));
+                Log::channel('api')->error("File '$storageTrackName' copied to public storage.");
+            } else {
+                Log::channel('api')->error("File '$serverPathName' does not exist.");
+            }
+        } else {
+            Log::channel('api')->info("File '$storageTrackName' already exists in public storage.");
+        }
+
+        return "/storage/$storageTrackName";
     }
 
 }

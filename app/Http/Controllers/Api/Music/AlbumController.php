@@ -8,6 +8,7 @@ use App\Services\AlbumService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AlbumController extends Controller
 {
@@ -30,7 +31,12 @@ class AlbumController extends Controller
     }
 
 
-    public function download(Request $request, string $id)
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return StreamedResponse
+     */
+    public function download(Request $request, string $id): StreamedResponse
     {
         $album = Album::with('songs')
             ->with('artist')
