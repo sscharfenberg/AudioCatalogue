@@ -30,13 +30,6 @@ const onChange = (value: string) => {
     }
 };
 const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncodedName));
-const currentChapter = computed(() => {
-    const chapter = currentTrack.value;
-    const path = chapter.trackEncodedPath;
-    const timestamp = chapter.timestamp;
-    const t = props.tracks.find(track => track.encodedPath === path);
-    return t ? `${t.track} - ${t.name}` : null;
-});
 onMounted(() => {
     if (currentTrack.value?.trackEncodedPath) {
         onChange(currentTrack.value.trackEncodedPath);
