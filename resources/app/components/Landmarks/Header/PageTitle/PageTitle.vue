@@ -9,6 +9,7 @@ const route = useRoute();
         <h2>
             <app-icon :name="route.meta.icon" />
             {{ route.meta.title }}
+            <span id="specificTitle" />
         </h2>
     </section>
 </template>
@@ -44,8 +45,6 @@ const route = useRoute();
     &::after {
         display: block;
         flex-grow: 1;
-
-        margin-left: 1ch;
 
         background-color: map.get(c.$main, "page-header-line");
         border-top-right-radius: map.get(s.$main, "page-header-radius");
