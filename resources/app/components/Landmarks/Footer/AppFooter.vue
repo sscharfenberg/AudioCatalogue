@@ -6,6 +6,7 @@ import ThemeSwitch from "./ThemeSwitch.vue";
     <footer>
         <theme-switch />
         <address>Handcrafted with ❤ by Sven Scharfenberg</address>
+        <a href="https://github.com/sscharfenberg/AudioCatalogue"><img src="./github.svg" alt="Github Repository" /></a>
     </footer>
 </template>
 
@@ -16,14 +17,27 @@ import ThemeSwitch from "./ThemeSwitch.vue";
 
 footer {
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
 
-    gap: 4px;
+    gap: 1ch;
 
     @include m.mq("portrait") {
         align-items: center;
         flex-direction: row;
+
+        address {
+            margin-left: auto;
+        }
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+
+        img {
+            width: 24px;
+            height: auto;
+        }
     }
 }
 </style>
