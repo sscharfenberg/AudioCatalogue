@@ -19,8 +19,6 @@ const props = defineProps({
     }
 });
 const onPlay = (value: string) => {
-    console.log("in title, play", value);
-    // store.setAudiobookBookmark(props.bookEncodedName, value, 0);
     emit("play", value);
 };
 </script>

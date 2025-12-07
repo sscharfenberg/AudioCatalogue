@@ -16,16 +16,18 @@ const props = defineProps({
 });
 const emit = defineEmits(["change"]);
 const menuOpen = ref(false);
-const selectedValue = ref("");
+const selectedValue = ref(props.selected);
 const dropdown = useTemplateRef("dropdown");
 /**
  * @function select option handler, is called when a option is selected
  * @param value
  */
 const select = (value: string) => {
-    selectedValue.value = value;
+    if (value !== selectedValue.value) {
+        selectedValue.value = value;
+        emit("change", value);
+    }
     menuOpen.value = false;
-    emit("change", value);
 };
 /**
  * @function toggle select menu open|closed
@@ -51,7 +53,6 @@ const onClickOutSide = ev => {
  * lifecycle hooks
  */
 onMounted(() => {
-    selectedValue.value = props.selected;
     document.addEventListener("click", onClickOutSide);
 });
 onUnmounted(() => {

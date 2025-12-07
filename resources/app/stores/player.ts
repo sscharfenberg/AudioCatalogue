@@ -31,7 +31,6 @@ export const usePlayerStore = defineStore("player", {
             );
             // do we already have a bookmark for this book?
             if (this.audiobooks.find(book => book.audiobookEncodedName === AudiobookEncodedName)) {
-                console.log("already exists, update bookmark");
                 this.audiobooks = this.audiobooks.map(book => {
                     if (book.audiobookEncodedName === AudiobookEncodedName) {
                         book.trackEncodedPath = TrackEncodedPath;
@@ -40,13 +39,20 @@ export const usePlayerStore = defineStore("player", {
                     return book;
                 });
             } else {
-                console.log("no bookmark for this book exists.");
                 this.audiobooks.push({
                     audiobookEncodedName: AudiobookEncodedName,
                     trackEncodedPath: TrackEncodedPath,
                     timestamp: 0
                 });
             }
+        },
+
+        /**
+         * @function clear and audiobook bookmark
+         * @param AudiobookEncodedName
+         */
+        clearAudiobookBookmark(AudiobookEncodedName: string) {
+            this.audiobooks = this.audiobooks.filter(book => book.audiobookEncodedName !== AudiobookEncodedName);
         }
     },
     getters: {

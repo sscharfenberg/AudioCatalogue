@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePlayerStore } from "@/stores/player";
 import MonoSelect from "Components/Select/MonoSelect.vue";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 const store = usePlayerStore();
 const props = defineProps({
     tracks: {
@@ -24,18 +24,14 @@ const trackOptions = props.tracks.map(t => {
     return { label: `${discs} ${t.track} - ${t.name}`, value: t.encodedPath };
 });
 const onChange = (value: string) => {
-    console.log("in tracks dropdown, change", value);
     if (value) {
         store.setAudiobookBookmark(props.bookEncodedName, value, 0);
         emit("play", value);
+    } else {
+        store.clearAudiobookBookmark(props.bookEncodedName);
     }
 };
 const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncodedName));
-onMounted(() => {
-    if (currentTrack.value?.trackEncodedPath) {
-        onChange(currentTrack.value.trackEncodedPath);
-    }
-});
 </script>
 
 <template>

@@ -2,7 +2,7 @@
 import { usePlayerStore } from "@/stores/player";
 import AppButton from "Components/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import AudiobookTracks from "./AudiobookTracks.vue";
 const props = defineProps({
     nav: {
@@ -22,12 +22,16 @@ const emit = defineEmits(["play"]);
 const store = usePlayerStore();
 const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncodedName));
 const playFirst = () => {
-    console.log("play first", props.tracks[0].encodedPath);
     emit("play", props.tracks[0].encodedPath);
 };
 const playAny = (value: string) => {
     emit("play", value);
 };
+onMounted(() => {
+    if (currentTrack.value?.trackEncodedPath) {
+        playAny(currentTrack.value.trackEncodedPath);
+    }
+});
 </script>
 
 <template>
