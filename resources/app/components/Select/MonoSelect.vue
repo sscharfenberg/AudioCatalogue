@@ -53,7 +53,6 @@ const updateSelection = (value: string) => {
     selectedValue.value = value;
 };
 watch(() => props.selected, updateSelection, { immediate: true });
-
 /**
  * lifecycle hooks
  */
