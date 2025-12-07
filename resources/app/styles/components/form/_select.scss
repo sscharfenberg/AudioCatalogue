@@ -7,6 +7,7 @@
 @use "Abstracts/colors" as c;
 @use "Abstracts/sizes" as s;
 @use "Abstracts/timings" as ti;
+@use "Abstracts/z-indexes" as z;
 
 .form-select {
     display: flex;
@@ -62,6 +63,8 @@
         top: #{map.get(s.$form, "select-height") + 2px};
         right: 0;
         left: 0;
+
+        z-index: map.get(z.$index, "form");
         flex-direction: column;
 
         overflow: hidden;

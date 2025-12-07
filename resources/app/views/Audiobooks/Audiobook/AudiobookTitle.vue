@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { usePlayerStore } from "@/stores/player";
-import PlayerAudiobookNavigation from "Views/Audiobooks/Audiobook/PlayerAudiobookNavigation.vue";
+import PlayerAudiobookNavigation from "./PlayerAudiobookNavigation.vue";
 const emit = defineEmits(["play"]);
-const store = usePlayerStore();
 const props = defineProps({
     title: {
         type: String,
@@ -31,12 +29,7 @@ const pageTitle = () => {
     <header class="details-title">
         <div class="details-title__title">
             <h3>{{ title }}</h3>
-            <player-audiobook-navigation
-                :nav="{}"
-                :tracks="tracks"
-                :book-encoded-name="bookEncodedName"
-                @play="onPlay"
-            />
+            <player-audiobook-navigation :tracks="tracks" :book-encoded-name="bookEncodedName" @play="onPlay" />
         </div>
         <Teleport to="#specificTitle">: {{ pageTitle() }}</Teleport>
         <img v-if="cover && cover.length > 48" :src="cover" :alt="title" />

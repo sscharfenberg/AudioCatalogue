@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppIcon from "Components/AppIcon/AppIcon.vue";
-import { nextTick, onMounted, onUnmounted, ref, useTemplateRef } from "vue";
+import { nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch } from "vue";
 const props = defineProps({
     options: {
         type: Array,
@@ -49,6 +49,11 @@ const onClickOutSide = ev => {
         menuOpen.value = false;
     }
 };
+const updateSelection = (value: string) => {
+    selectedValue.value = value;
+};
+watch(() => props.selected, updateSelection, { immediate: true });
+
 /**
  * lifecycle hooks
  */
