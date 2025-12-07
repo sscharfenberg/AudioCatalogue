@@ -17,10 +17,11 @@ class AudiobookService
      * @param Audiobook $audiobook
      * @param bool $addCover
      * @param bool $addTracks
+     * @param bool $thumb
      * @return array
      * @throws \Exception
      */
-    private function formatAudiobook(Audiobook $audiobook, bool $addCover = false, bool $addTracks = false): array
+    private function formatAudiobook(Audiobook $audiobook, bool $addCover = false, bool $addTracks = false, bool $thumb = false): array
     {
         $c = new CoverService();
         $u = new UrlSafeService();
@@ -35,12 +36,16 @@ class AudiobookService
             'narrators' => $audiobook->narrators,
             'numTracks' => $audiobook->tracks->count()
         ];
-        if ($addCover) {
+        if ($addCover && !$thumb) {
             $track = $audiobook->tracks()->first();
             $arr['cover'] = $c->getCover($track->id, $track->path, 'audiobooks', $track->cover);
         }
         if ($addTracks) {
             $arr['tracks'] = $audiobook->tracks;
+        }
+        if ($thumb) {
+            $track = $audiobook->tracks()->first();
+            $arr['thumbnail'] = $c->getCover($track->id, $track->path, 'audiobooks', $track->cover, true);
         }
         return $arr;
     }
@@ -214,5 +219,27 @@ class AudiobookService
             'name' => $track->name,
         ];
     }
+
+    /**
+     * @function get a number of random audiobooks
+     * @return array
+     */
+    public function getRandomAudiobooks(): array
+    {
+        $books = Audiobook::with('tracks')
+            ->inRandomOrder()
+            ->limit(config('collection.stats.audiobooks.random'))
+            ->get()
+            ->map(function (Audiobook $audiobook) {
+                $audiobook->duration = $audiobook->tracks->sum('duration');
+                $audiobook->size = $audiobook->tracks->sum('size');
+                $audiobook->authors = $this->getBookAuthors($audiobook);
+                $audiobook->narrators = $this->getBookNarrators($audiobook);
+                // format audiobook json array
+                return $this->formatAudiobook($audiobook, false, false, true);
+            });
+        return array_values($books->toArray());
+    }
+
 
 }

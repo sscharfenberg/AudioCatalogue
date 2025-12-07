@@ -28,6 +28,10 @@ Route::prefix('api')->group(function () {
     Route::get('/widget/artist',
         [\App\Http\Controllers\Api\Widget\ArtistWidgetController::class, "show"]
     );
+    // Audiobook Widget Controller
+    Route::get('/widget/audiobook',
+        [\App\Http\Controllers\Api\Widget\AudiobookWidgetController::class, "show"]
+    );
 
     /**
      * Music Controllers
