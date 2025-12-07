@@ -1,61 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AudioCatalogue
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is web application organizes your mp3 catalogue and lets you play music and audiobooks in your browser. The application is supposed to run in your home LAN without being accessible from the internet.
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* You need a linux server that has a samba server containing your music and audiobooks.
+* Laravel needs PHP `^8.2`, any webserver (`Apache` and `Nginx` should both work fine) a `MySQL` or `MariaDB` server so Laravel can run on it.
+* The Laravel application needs to be able to read and write on the samba share. This can be acomplished by having the webserver user, probably `www-data` be a member of the samba user group. All Samba files should be group read/writeable.
+* The samba server needs to have
+    ```conf
+    create mask = 0770
+    directory mask = 0775
+    ```
+* `PHP` needs to have a sensible execution time and memory limit, `mbstring` and `exif` extensions should be enabled, as well as the required drivers for `MySQL` or `MariaDB`.
+* The application uses several native shell commands. `find` should be available, `zip` might need to be installed (I couldn't get php-zip to work on Debian13/php8.4). 
+* The application is tailored for my mp3 collection and in some cases assumes a certain structure, be prepared to customize this.
+* Frontend needs NodeJS `^24`.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Warning
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* This is a hobby project for myself and not production-ready.
+* Only make this accessible from the internet if you really know what you are doing. I haven't done any hardening, there is no auth and not many security precautions have been taken. Use at your own risk. 
+* There is no `docker-compose`, if you want to dockerize this, you will need to cook it yourself. 
+* Most of the texts are in german with a mix of english thrown in. Feel free to translate, there is currently no i18n planned.
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Clone repository, edit `.env` and `config/collection`, install vendor packages with composer, and `npm run build` to create the production bundle.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* `php artisan migrate:fresh`
+* `php artisan db:seed`
+* `php artisan app:update`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Setup IDE for development
 
-## Laravel Sponsors
+I am using IntelliJ, other IDEs probably work as well; I just don't know them.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### A) Prettier
 
-### Premium Partners
+Prettier needs to be run on save.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+#### IntelliJ
 
-## Contributing
+* `Settings` → `Languages & Frameworks` → `Javascript` → `Prettier`
+* Select `Automatic Prettier configuration`
+* Run for files: `**/*.{js,ts,json,vue,scss}`
+* `Run on save` must be checked
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### B) ESLint
 
-## Code of Conduct
+ESLint should be run while editing in the IDE.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### IntelliJ
 
-## Security Vulnerabilities
+* `Settings` → `Languages & Frameworks` → `Javascript` → `Code Quality Tools` → `ESLint`
+* Select `Automatic ESLint configuration`
+* Run for files: `**/*.{js,ts,html,vue}`
+* `Run on eslint --fix on save` must be checked.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### C) Stylelint
+
+StyleLint should be run while editing in the IDE. This does not work well in `.vue` files currently.
+
+#### IntelliJ
+
+* `Settings` → `Languages & Frameworks` → `Style Sheets` → `Stylelint`
+* Select `Enable`
+* Run for files: `**/*.{scss, vue}`
+* `Run on stylelint --fix on save` must be checked
+
+## Artisan commands
+
+### `php artisan app:update`
+
+The main command that reads the samba share files and updates the database. This should run as a daily cronjob. Includes all following console commands.
+
+### `php artisan app:clean`
+
+Cleans samba share of unwanted files (MacOS, Samba junk etc) and cleans storage folder.
+
+### `php artisan app:csv:audiobook` and `php artisan app:csv:music`
+
+Creates CSV files with a list of all `.mp3` files on the samba share. Later commands need these CSV files to know which files to check.
+
+### `php artisan app:db:audiobook` and `php artisan app:db:music`
+
+Reads the CSV files and creates database entries.
+
+## NPM commands
+
+### `npm run dev`
+
+Development mode. Ensure you have `APP_ENV=local` in `.env` and the server has a `hot` file in `public` directory.
+
+### `npm run build`
+
+Production mode. Ensure you have `APP_ENV=production` in `.env`.
+
+### `npm run lint`
+
+Run Eslint and Stylelint separately.
 
 ## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+`AudioCatalogue` is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
