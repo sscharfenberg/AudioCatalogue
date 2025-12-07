@@ -40,6 +40,6 @@ const cssClasses = computed(() => {
 
 <template>
     <svg :class="cssClasses">
-        <use :xlink:href="`/build/sprite.svg#${name}`"></use>
+        <use :xlink:href="`#${name}`"></use>
     </svg>
 </template>

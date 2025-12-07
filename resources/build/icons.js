@@ -16,7 +16,7 @@ const args = processAgs(argv.slice(2));
 const PROJECTROOT = fs.realpathSync(cwd());
 const ICONS_DIR = path.resolve(PROJECTROOT, "resources/app/assets/icons");
 const INLINE = args.i || false; // true = no DOCTYPE and xml/xmlns attribute
-const OUT_DIR = path.resolve(PROJECTROOT, "public/build");
+const OUT_DIR = path.resolve(PROJECTROOT, "storage/app/public");
 const OUT_PATH = path.resolve(OUT_DIR, "sprite.svg");
 
 /**
@@ -144,7 +144,7 @@ export const createIconSprite = () => {
         cleanDefs: true,
         cleanSymbols: true,
         svgAttrs: {
-            class: "icon",
+            class: "icon-sprite",
             "aria-hidden": "true",
             xmlns: "http://www.w3.org/2000/svg"
         }

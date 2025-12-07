@@ -24,6 +24,11 @@
         @endif
     </head>
     <body>
+        @php
+            if (Storage::disk('public')->exists('sprite.svg')) {
+                echo Storage::disk('public')->get('sprite.svg');
+            }
+        @endphp
         <div id="app"></div>
     </body>
 </html>

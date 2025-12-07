@@ -71,9 +71,11 @@ class Cleanup extends Command
         $this->info("deleting laravel folder storage/public - ".count($files)." files found.");
         Log::channel('lib')->info("deleting laravel folder storage/public - ".count($files)." files found.");
         foreach($files as $file) {
-            Storage::disk('public')->delete($file);
-            Log::channel('lib')->debug("deleted $file");
-            $this->line("deleted '".$file);
+            if ($file != 'sprite.svg') {
+                Storage::disk('public')->delete($file);
+                Log::channel('lib')->debug("deleted $file");
+                $this->line("deleted '".$file);
+            }
         }
 
         // clean downloads disk
