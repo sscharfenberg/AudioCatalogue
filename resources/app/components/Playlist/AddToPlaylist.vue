@@ -34,8 +34,8 @@ const onAdd = () => {
         .post(`/api/playlists/add-song`, { playlistId: playlistId.value, songPath: route.params.id })
         .then(response => {
             push.success({
-                title: "Song hinzugefügt.",
-                message: `Song ${response.data.newEntry.song} zu Playlist ${props.playlists.find(playlist => playlist.id === playlistId.value).name} hinzugefügt.`
+                title: "Song hinzugefügt ✅",
+                message: `Song '${response.data.newEntry.song}' zu Playlist '${props.playlists.find(playlist => playlist.id === playlistId.value).name}' hinzugefügt.`
             });
             availablePlaylists.value = mapPlaylists(response.data.playlists);
             playlistId.value = availablePlaylists.value.length > 0 ? availablePlaylists.value[0].value : "";

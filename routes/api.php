@@ -5,138 +5,159 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('api')->group(function () {
 
-    /**
+    /**************************************************************************
      * Widget Controllers
-     */
+     *************************************************************************/
+
     // Global Widget Controller
     Route::get('/widget/global',
         [\App\Http\Controllers\Api\Widget\GlobalWidgetController::class, 'show']
-    );
-    // Song Widget Controller
-    Route::get('/widget/song',
-        [\App\Http\Controllers\Api\Widget\SongWidgetController::class, 'show']
-    );
-    // Genre Widget Controller
-    Route::get('/widget/genre',
-        [\App\Http\Controllers\Api\Widget\GenreWidgetController::class, 'show']
-    );
-    // Album Widget Controller
-    Route::get('/widget/album',
-        [\App\Http\Controllers\Api\Widget\AlbumWidgetController::class, 'show']
-    );
-    // Artist Widget Controller
-    Route::get('/widget/artist',
-        [\App\Http\Controllers\Api\Widget\ArtistWidgetController::class, 'show']
     );
     // Audiobook Widget Controller
     Route::get('/widget/audiobook',
         [\App\Http\Controllers\Api\Widget\AudiobookWidgetController::class, 'show']
     );
 
-    /**
+    /**************************************************************************
      * Music Controllers
+     *************************************************************************/
+
+    /**
+     * SongController
      */
-    // Songs Controller
+    // list songs
     Route::get('/music/songs',
-        [\App\Http\Controllers\Api\Music\SongsController::class, 'show']
+        [\App\Http\Controllers\Api\Music\SongController::class, 'list']
     );
-    // Song Controller
+    // show a specific song
     Route::get('/music/songs/{path}',
         [\App\Http\Controllers\Api\Music\SongController::class, 'show']
     );
-    // Song Search Controller
+    // search for songs
     Route::get('/music/search/songs/{search}',
-        [\App\Http\Controllers\Api\Music\SongSearchController::class, 'show']
+        [\App\Http\Controllers\Api\Music\SongController::class, 'search']
+    );
+    // load song widget
+    Route::get('/widget/song',
+        [\App\Http\Controllers\Api\Music\SongController::class, 'widget']
     );
 
-    // Genres Controller
+    /**
+     * GenreController
+     */
+    // list genres
     Route::get('/music/genres',
-        [\App\Http\Controllers\Api\Music\GenresController::class, 'show']
+        [\App\Http\Controllers\Api\Music\GenreController::class, 'list']
     );
-    // Genre Controller
+    // show a specific genre
     Route::get('/music/genres/{name}',
         [\App\Http\Controllers\Api\Music\GenreController::class, 'show']
     );
-    // Genre Search Controller
+    // search genres
     Route::get('/music/search/genres/{search}',
-        [\App\Http\Controllers\Api\Music\GenreSearchController::class, 'show']
+        [\App\Http\Controllers\Api\Music\GenreController::class, 'search']
+    );
+    // load genre widget
+    Route::get('/widget/genre',
+        [\App\Http\Controllers\Api\Music\GenreController::class, 'widget']
     );
 
-    // Albums Controller
+    /**
+     * AlbumController
+     */
+    // list albums
     Route::get('/music/albums',
-        [\App\Http\Controllers\Api\Music\AlbumsController::class, 'show']
+        [\App\Http\Controllers\Api\Music\AlbumController::class, 'list']
     );
-    // Album Controller
+    // show a specific album
     Route::get('/music/albums/{id}',
         [\App\Http\Controllers\Api\Music\AlbumController::class, 'show']
     );
+    // download a specific album
     Route::get('/music/albums/{id}/download',
         [\App\Http\Controllers\Api\Music\AlbumController::class, 'download']
     );
-    // Album Search Controller
+    // search albums
     Route::get('/music/search/albums/{search}',
-        [\App\Http\Controllers\Api\Music\AlbumSearchController::class, 'show']
+        [\App\Http\Controllers\Api\Music\AlbumController::class, 'search']
+    );
+    // load album widget
+    Route::get('/widget/album',
+        [\App\Http\Controllers\Api\Music\AlbumController::class, 'widget']
     );
 
-    // Artists Controller
+    /**
+     * ArtistController
+     */
+    // list artists
     Route::get('/music/artists',
-        [\App\Http\Controllers\Api\Music\ArtistsController::class, 'show']
+        [\App\Http\Controllers\Api\Music\ArtistController::class, 'list']
     );
-    // Artist Controller
+    // show a specific artist
     Route::get('/music/artists/{id}',
         [\App\Http\Controllers\Api\Music\ArtistController::class, 'show']
     );
-    // Genre Search Controller
+    // search artists
     Route::get('/music/search/artists/{search}',
-        [\App\Http\Controllers\Api\Music\ArtistSearchController::class, 'show']
+        [\App\Http\Controllers\Api\Music\ArtistController::class, 'search']
+    );
+    // load artist widget
+    Route::get('/widget/artist',
+        [\App\Http\Controllers\Api\Music\ArtistController::class, 'widget']
     );
 
-    /**
+    /**************************************************************************
      * Audiobook Controllers
-     */
-    // Audiobooks Controller
+     *************************************************************************/
+
+    // list audiobooks
     Route::get('/audiobooks',
-        [\App\Http\Controllers\Api\Audiobooks\AudiobooksController::class, 'show']
+        [\App\Http\Controllers\Api\Audiobooks\AudiobookController::class, 'list']
     );
-    // Audiobook Controller
+    // show a specific audiobook
     Route::get('/audiobooks/{name}',
         [\App\Http\Controllers\Api\Audiobooks\AudiobookController::class, 'show']
     );
-    // Play Track Controller
+    // play a specific track of an audiobook
     Route::get('/audiobooks/play/{path}',
-        [\App\Http\Controllers\Api\Audiobooks\TrackController::class, 'play']
+        [\App\Http\Controllers\Api\Audiobooks\AudiobookController::class, 'play']
     );
-    // Audiobook Search Controller
+    // search audiobooks
     Route::get('/audiobooks/search/{search}',
-        [\App\Http\Controllers\Api\Audiobooks\AudiobookSearchController::class, 'show']
+        [\App\Http\Controllers\Api\Audiobooks\AudiobookController::class, 'search']
+    );
+    // load audiobooks widget
+    Route::get('/widget/audiobook',
+        [\App\Http\Controllers\Api\Audiobooks\AudiobookController::class, 'widget']
     );
 
-    /**
+    /**************************************************************************
      * Playlist Controllers
-     */
+     *************************************************************************/
+
     // Show Playlists
     Route::get('/playlists',
-        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'list']
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'list']
     );
     // new Playlist
     Route::post('/playlists/new',
-        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'create']
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'create']
     );
     // Sort Playlists
     Route::post('/playlists/sort',
-        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'sort']
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'sort']
     );
     // Edit Playlist
     Route::post('/playlists/edit',
-        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'edit']
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'edit']
     );
     // Delete Playlist
     Route::post('/playlists/delete',
-        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'delete']
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'delete']
     );
     // Add Song to Playlist
     Route::post('/playlists/add-song',
-        [\App\Http\Controllers\Api\Playlists\PlaylistEntryController::class, 'addSong']
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'addSong']
     );
 
 });

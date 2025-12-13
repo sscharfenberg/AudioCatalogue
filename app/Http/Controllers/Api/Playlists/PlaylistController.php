@@ -7,7 +7,7 @@ use App\Services\PlaylistService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class PlaylistsController extends Controller
+class PlaylistController extends Controller
 {
     /**
      * @param Request $request
@@ -79,4 +79,21 @@ class PlaylistsController extends Controller
         $playlists = $p->deletePlaylist($request);
         return response()->json($playlists);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function addSong(Request $request): JsonResponse
+    {
+        $p = new PlaylistService();
+        $res = $p->addSongToPlaylist($request->get('playlistId'), $request->get('songPath'));
+        if (count($res) > 0) {
+            return response()->json($res);
+        } else {
+            return response()->json(['message' => 'Fehler beim hinzufügen. Logfiles prüfen!'], 422);
+        }
+    }
+
 }

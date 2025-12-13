@@ -4,14 +4,30 @@ namespace App\Http\Controllers\Api\Music;
 
 use App\Http\Controllers\Controller;
 use App\Models\Album;
-use App\Services\AlbumService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Services\AlbumService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AlbumController extends Controller
 {
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function list(Request $request): JsonResponse
+    {
+        $a = new AlbumService;
+        $allAlbums = $a->getAllAlbums();
+        if (count($allAlbums) > 0) {
+            return response()->json($allAlbums, 200);
+        } else {
+            return response()
+                ->json(['message' => 'Fehler beim laden der Alben. app:update durchgeführt?'], 422);
+        }
+    }
 
     /**
      * @param Request $request
@@ -30,7 +46,6 @@ class AlbumController extends Controller
         }
     }
 
-
     /**
      * @param Request $request
      * @param string $id
@@ -48,6 +63,37 @@ class AlbumController extends Controller
             $album->artist->name." - $album->name.zip",
             [ 'Content-Type' => 'application/zip' ]
         );
+    }
+
+    /**
+     * @param Request $request
+     * @param string $search
+     * @return JsonResponse
+     */
+    public function search(Request $request, string $search): JsonResponse
+    {
+        $a = new AlbumService;
+        $artists = $a->searchAlbumByName($search);
+        return response()->json([
+            'searchTerm' => $search,
+            'results' => $artists
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function widget(Request $request): JsonResponse
+    {
+        $a = new AlbumService;
+        $stats = $a->getRandomAlbums();
+        if (count($stats) > 0) {
+            return response()->json($stats);
+        } else {
+            return response()
+                ->json(['message' => 'Fehler beim laden der Kachel Alben.'], 422);
+        }
     }
 
 }
